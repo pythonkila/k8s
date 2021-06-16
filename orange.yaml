@@ -1,0 +1,153 @@
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+# pods "orange" was not valid:
+# * spec: Forbidden: pod updates may not change fields other than `spec.containers[*].image`, `spec.initContainers[*].image`, `spec.activeDeadlineSeconds` or `spec.tolerations` (only additions to existing tolerations)
+#   core.PodSpec{
+#   	Volumes: {{Name: "default-token-6jwps", VolumeSource: {Secret: &{SecretName: "default-token-6jwps", DefaultMode: &420}}}},
+#   	InitContainers: []core.Container{
+#   		{
+#   			Name:  "init-myservice",
+#   			Image: "busybox",
+#   			Command: []string{
+#   				"sh",
+#   				"-c",
+# - 				"sleep 2;",
+# + 				"sleeeep 2;",
+#   			},
+#   			Args:       nil,
+#   			WorkingDir: "",
+#   			... // 17 identical fields
+#   		},
+#   	},
+#   	Containers:          {{Name: "orange-container", Image: "busybox:1.28", Command: {"sh", "-c", "echo The app is running! && sleep 3600"}, VolumeMounts: {{Name: "default-token-6jwps", ReadOnly: true, MountPath: "/var/run/secrets/kubernetes.io/serviceaccount"}}, ...}},
+#   	EphemeralContainers: nil,
+#   	... // 26 identical fields
+#   }
+
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2021-06-16T03:28:03Z"
+  name: orange
+  namespace: default
+  resourceVersion: "3128"
+  uid: 7411ae8c-eaff-4728-a22f-c03dd59a0865
+spec:
+  containers:
+  - command:
+    - sh
+    - -c
+    - echo The app is running! && sleep 3600
+    image: busybox:1.28
+    imagePullPolicy: IfNotPresent
+    name: orange-container
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-6jwps
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  initContainers:
+  - command:
+    - sh
+    - -c
+    - sleep 2;
+    image: busybox
+    imagePullPolicy: Always
+    name: init-myservice
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-6jwps
+      readOnly: true
+  nodeName: controlplane
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: default-token-6jwps
+    secret:
+      defaultMode: 420
+      secretName: default-token-6jwps
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2021-06-16T03:28:03Z"
+    message: 'containers with incomplete status: [init-myservice]'
+    reason: ContainersNotInitialized
+    status: "False"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2021-06-16T03:28:03Z"
+    message: 'containers with unready status: [orange-container]'
+    reason: ContainersNotReady
+    status: "False"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2021-06-16T03:28:03Z"
+    message: 'containers with unready status: [orange-container]'
+    reason: ContainersNotReady
+    status: "False"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2021-06-16T03:28:03Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - image: busybox:1.28
+    imageID: ""
+    lastState: {}
+    name: orange-container
+    ready: false
+    restartCount: 0
+    started: false
+    state:
+      waiting:
+        reason: PodInitializing
+  hostIP: 10.1.211.6
+  initContainerStatuses:
+  - containerID: docker://7cc155dd0175bf1141fd18ca507199a8a739560e9be57956eaf07a6cf6725d32
+    image: busybox:latest
+    imageID: docker-pullable://busybox@sha256:930490f97e5b921535c153e0e7110d251134cc4b72bbb8133c6a5065cc68580d
+    lastState:
+      terminated:
+        containerID: docker://7cc155dd0175bf1141fd18ca507199a8a739560e9be57956eaf07a6cf6725d32
+        exitCode: 127
+        finishedAt: "2021-06-16T03:29:58Z"
+        reason: Error
+        startedAt: "2021-06-16T03:29:58Z"
+    name: init-myservice
+    ready: false
+    restartCount: 4
+    state:
+      waiting:
+        message: back-off 1m20s restarting failed container=init-myservice pod=orange_default(7411ae8c-eaff-4728-a22f-c03dd59a0865)
+        reason: CrashLoopBackOff
+  phase: Pending
+  podIP: 10.244.0.9
+  podIPs:
+  - ip: 10.244.0.9
+  qosClass: BestEffort
+  startTime: "2021-06-16T03:28:03Z"
